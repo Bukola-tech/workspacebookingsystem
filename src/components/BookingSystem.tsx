@@ -8,10 +8,13 @@ interface DeskInfo {
   booked: boolean;
 }
 
+type Membership = 'basic' | 'premium' | 'executive';
+type Revenue = Record<Membership | 'team', number>;
+
 const BookingSystem: React.FC = () => {
   const [desks, setDesks] = useState<DeskInfo[]>([
-    ...Array(10).fill(0).map((_, i) => ({ id: i + 1, type: 'individual', booked: false })),
-    ...Array(5).fill(0).map((_, i) => ({ id: i + 11, type: 'team', booked: false }))
+    ...Array(10).fill(0).map((_, i) => ({ id: i + 1, type: 'individual' as 'individual', booked: false })),
+    ...Array(5).fill(0).map((_, i) => ({ id: i + 11, type: 'team' as 'team', booked: false }))
   ]);
   const [selectedDesk, setSelectedDesk] = useState<DeskInfo | null>(null);
   const [totalCharge, setTotalCharge] = useState(0);
@@ -22,7 +25,8 @@ const BookingSystem: React.FC = () => {
       setSelectedDesk(desk);
     }
   }
-  const [revenue, setRevenue] = useState({
+
+  const [revenue, setRevenue] = useState<Revenue>({
     basic: 0,
     premium: 0,
     executive: 0,
@@ -62,7 +66,7 @@ const BookingSystem: React.FC = () => {
       setRevenue(prevRevenue => {
         const newRevenue = { ...prevRevenue };
         if (selectedDesk.type === 'individual') {
-          newRevenue[membership.toLowerCase()] += price;
+          newRevenue[membership.toLowerCase() as Membership] += price;
         } else if (selectedDesk.type === 'team') {
           newRevenue.team += price;
         }
@@ -70,7 +74,6 @@ const BookingSystem: React.FC = () => {
       });
     }
   }
-
 
   return (
     <div className="booking-system">

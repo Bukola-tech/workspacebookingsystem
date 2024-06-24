@@ -9,11 +9,10 @@ interface DeskProps {
 
 const Desk: React.FC<DeskProps> = ({ id, type, booked, onBook }) => {
   return (
-    <div 
-      className={`desk ${type} ${booked ? 'booked' : ''}`}
-      onClick={!booked ? onBook : undefined}
-    >
-      Desk {id} ({type})
+    <div className={`desk ${booked ? 'booked' : ''}`} onClick={!booked ? onBook : undefined}>
+      <p>Desk {id}</p>
+      <p>Type: {type}</p>
+      <p>{booked ? 'Booked' : 'Available'}</p>
     </div>
   );
 }
