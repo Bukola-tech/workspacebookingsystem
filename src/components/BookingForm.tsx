@@ -11,19 +11,21 @@ const BookingForm: React.FC<BookingFormProps> = ({ deskType, onBook }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onBook(membership, hours);
+    onBook(deskType === 'individual' ? membership : 'Team', hours);
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Membership:
-        <select value={membership} onChange={(e) => setMembership(e.target.value)}>
-          <option value="Basic">Basic</option>
-          <option value="Premium">Premium</option>
-          <option value="Executive">Executive</option>
-        </select>
-      </label>
+      {deskType === 'individual' && (
+        <label>
+          Membership:
+          <select value={membership} onChange={(e) => setMembership(e.target.value)}>
+            <option value="Basic">Basic</option>
+            <option value="Premium">Premium</option>
+            <option value="Executive">Executive</option>
+          </select>
+        </label>
+      )}
       <label>
         Hours:
         <input type="number" value={hours} onChange={(e) => setHours(parseInt(e.target.value))} min="1" />

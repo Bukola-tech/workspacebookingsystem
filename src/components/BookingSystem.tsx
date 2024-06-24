@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Desk from './Desk';
 import BookingForm from './BookingForm';
+import Dashboard from '../pages/Dashboard';
 
 interface DeskInfo {
   id: number;
@@ -18,6 +19,12 @@ const BookingSystem: React.FC = () => {
   ]);
   const [selectedDesk, setSelectedDesk] = useState<DeskInfo | null>(null);
   const [totalCharge, setTotalCharge] = useState(0);
+  const [revenue, setRevenue] = useState<Revenue>({
+    basic: 0,
+    premium: 0,
+    executive: 0,
+    team: 0,
+  });
 
   const handleBook = (id: number) => {
     const desk = desks.find(d => d.id === id);
@@ -25,13 +32,6 @@ const BookingSystem: React.FC = () => {
       setSelectedDesk(desk);
     }
   }
-
-  const [revenue, setRevenue] = useState<Revenue>({
-    basic: 0,
-    premium: 0,
-    executive: 0,
-    team: 0,
-  });
 
   const calculatePrice = (membership: string, hours: number) => {
     let pricePerHour = 0;
@@ -97,6 +97,7 @@ const BookingSystem: React.FC = () => {
       <div className="total-charge">
         {totalCharge > 0 && <p>Total Charge: ${totalCharge.toFixed(2)}</p>}
       </div>
+      <Dashboard revenue={revenue} />
     </div>
   );
 }
